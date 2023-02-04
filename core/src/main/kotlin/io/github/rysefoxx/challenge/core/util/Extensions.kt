@@ -8,6 +8,10 @@ import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets
 import java.util.*
 
+/**
+ * @author https://github.com/l4zs/translations
+ */
+
 internal fun JavaPlugin.saveResource(resourcePath: String, savePath: String, replace: Boolean = false) {
     getResource(resourcePath)
         ?.readBytes()?.let {

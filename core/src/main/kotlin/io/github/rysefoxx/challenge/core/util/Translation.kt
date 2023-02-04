@@ -12,6 +12,10 @@ import java.util.Locale
 import java.util.Properties
 import kotlin.io.path.div
 
+/**
+ * @author https://github.com/l4zs/translations
+ */
+
 class Translation(
     private val plugin: JavaPlugin,
     private val key: Key,

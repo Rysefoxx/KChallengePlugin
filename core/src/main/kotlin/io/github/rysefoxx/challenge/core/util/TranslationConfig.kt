@@ -7,6 +7,10 @@ import java.io.File
 import java.io.IOException
 import java.util.Locale
 
+/**
+ * @author https://github.com/l4zs/translations
+ */
+
 class TranslationConfig(dir: File, name: String, private val key: Key, templateLocales: List<Locale>, private val plugin: JavaPlugin) {
 
     private val translationsComment = listOf(
