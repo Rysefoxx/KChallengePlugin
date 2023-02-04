@@ -1,0 +1,11 @@
+# Project exclude paths
+/.gradle/
+/api/build/
+/build/
+/core/build/
+/core/build/classes/kotlin/main/
+/paper/build/
+/paper/build/classes/kotlin/main/
+/spigot/build/
+/timer/build/
+/timer/build/classes/kotlin/main/

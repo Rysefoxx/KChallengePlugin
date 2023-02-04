@@ -1,0 +1,16 @@
+Challenge Kategorien:
+ - Herausforderungen - END_CRYSTAL
+ - Erweiterungen - CRAFTING_TABLE
+ - Langzeitprojekte - CLOCK
+ - Plugins - EMPTY_MAP
+ - Randomizer (Crafting, Block Break, Chest Loot, Mob Spawn, Mob Drop, Structures) - STRUCTURE_VOID
+ - Wettbewerbe
+ - Team
+ - Zeit
+ - Punkte
+ - Zufall (Es wird eine zufällige Erweiterung ausgewählt)
+ - Resourcepack - NAME_TAG (Erweiterungen die nur mit einem Resourcepack funktionieren) - Der Spieler kann auf ein Item klicken und das Resourcepack wird automatisch heruntergeladen
+ - Spieler einstellungen (Herzen, Split Damage, Split Health, etc.)
+ - Allgemeine Einstellungen (Blöcke abbauen, Blöcke Platzieren, etc.)
+
+
