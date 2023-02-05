@@ -6,7 +6,6 @@ import net.kyori.adventure.translation.GlobalTranslator
 import net.kyori.adventure.translation.TranslationRegistry
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
-import java.io.InputStreamReader
 import java.nio.file.Path
 import java.util.Locale
 import java.util.Properties
@@ -24,7 +23,7 @@ class Translation(
 ) {
 
     private val baseConfigName = "translations.yml"
-    private val dir = File(plugin.dataFolder, "translations").resolve(key.value())
+    private val dir = File(plugin.dataFolder, "general").resolve(key.value())
     private val config = TranslationConfig(dir.parentFile, baseConfigName, key, templateLocales, plugin)
     private var translationRegistry = blankTranslationRegistry()
 

@@ -1,7 +1,6 @@
-import org.jetbrains.kotlin.gradle.plugin.mpp.pm20.util.archivesName
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
 group = "io.github.rysefoxx.challenge.paper"
-archivesName.set("Paper-Challenge")
 
 repositories {
     maven {
@@ -12,4 +11,8 @@ repositories {
 dependencies {
     compileOnly(project(":core"))
     compileOnly("io.papermc.paper:paper-api:1.19.3-R0.1-SNAPSHOT")
+}
+
+tasks.withType(ShadowJar::class.java) {
+    archiveFileName.set("Challenge-Paper.jar")
 }

@@ -28,10 +28,10 @@ class TranslationConfig(dir: File, name: String, private val key: Key, templateL
     private val yml: YamlConfiguration
 
     var locales: List<Locale>
-        get() = yml.getStringList("translations").mapNotNull { Locale.forLanguageTag(it.replace("_", "-")) }
+        get() = yml.getStringList("general").mapNotNull { Locale.forLanguageTag(it.replace("_", "-")) }
         set(value) {
-            yml.set("translations", value.map { it.toLanguageTag().replace("-", "_") })
-            yml.setComments("translations", translationsComment)
+            yml.set("general", value.map { it.toLanguageTag().replace("-", "_") })
+            yml.setComments("general", translationsComment)
             save()
         }
 

@@ -1,4 +1,3 @@
-import org.jetbrains.kotlin.gradle.plugin.mpp.pm20.util.archivesName
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -8,7 +7,6 @@ plugins {
 }
 
 group = "io.github.rysefoxx.challenge"
-archivesName.set("Challenge")
 
 subprojects {
     apply(plugin = "com.github.johnrengelman.shadow")
@@ -38,8 +36,6 @@ allprojects {
     }
 
     dependencies {
-        implementation("org.jetbrains.kotlin:kotlin-stdlib:1.6.21")
-        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
         compileOnly("io.github.rysefoxx.inventory:RyseInventory-Plugin:1.5.7")
         compileOnly("org.jetbrains:annotations:23.1.0")
     }
@@ -54,6 +50,7 @@ dependencies {
 tasks {
     shadowJar {
         archiveClassifier.set("")
+        archiveFileName.set("Challenge.jar")
     }
     runServer {
         dependsOn(shadowJar)

@@ -1,7 +1,6 @@
-package io.github.rysefoxx.challenge.core.extension
+package io.github.rysefoxx.challenge.extension
 
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import org.bukkit.Bukkit
@@ -11,8 +10,8 @@ import java.net.URL
 
 object JarDownloader {
 
-    fun download(fileName: String) = runBlocking {
-        val job = async {
+    fun download(fileName: String): File {
+        runBlocking {
             withContext(Dispatchers.IO) {
                 val url = URL("https://cdn.ryseinventory.de/Downloads/$fileName.jar")
                 val connection = url.openConnection()
@@ -22,11 +21,9 @@ object JarDownloader {
                 val outputStream = FileOutputStream(file)
                 inputStream.copyTo(outputStream)
                 outputStream.close()
-                file
-
             }
         }
-        val file = job.await()
+        return File("plugins/", "$fileName.jar")
     }
 
     fun loadAndActive(file: File) {

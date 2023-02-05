@@ -10,7 +10,8 @@ import java.util.*
 object TranslationProvider {
 
     fun registerAll(plugin: ChallengePlugin) {
-        Translation(plugin, Key.key("general"), Path.of("translations"), listOf(Locale.ENGLISH, Locale.GERMAN))
+        Translation(plugin, Key.key("general"), Path.of("general"), listOf(Locale.ENGLISH, Locale.GERMAN))
+        Translation(plugin, Key.key("inventory"), Path.of("inventory"), listOf(Locale.ENGLISH, Locale.GERMAN))
 
         registerModules(plugin)
     }

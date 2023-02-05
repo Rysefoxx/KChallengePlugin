@@ -1,15 +1,19 @@
 package io.github.rysefoxx.challenge.core.command
 
+import com.google.common.collect.ImmutableList
 import io.github.rysefoxx.challenge.core.ChallengePlugin
 import io.github.rysefoxx.challenge.core.default.PermissionDefaults
 import io.github.rysefoxx.challenge.core.extension.*
 import io.github.rysefoxx.challenge.core.inventory.ChallengeInventory
+import io.github.rysefoxx.challenge.core.inventory.PluginInventory
 import io.github.rysefoxx.challenge.core.module.ModuleManager
 import io.github.rysefoxx.challenge.core.util.ItemBuilder
 import io.github.rysefoxx.inventory.plugin.content.IntelligentItem
 import io.github.rysefoxx.inventory.plugin.content.InventoryContents
 import io.github.rysefoxx.inventory.plugin.content.InventoryProvider
 import io.github.rysefoxx.inventory.plugin.pagination.RyseInventory
+import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.minimessage.tag.resolver.Formatter
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
@@ -21,7 +25,7 @@ class SettingsCommand(private val plugin: ChallengePlugin) : CommandExecutor {
         if (sender !is Player)
             return true
 
-        if(!sender.hasPermission(PermissionDefaults.SETTINGS_COMMAND)) {
+        if (!sender.hasPermission(PermissionDefaults.SETTINGS_COMMAND)) {
             sender.translated("no_permission")
             return true
         }
@@ -47,7 +51,18 @@ class SettingsCommand(private val plugin: ChallengePlugin) : CommandExecutor {
                             .lore(sender.toArray("item_challenge_lore"))
                             .build()
                     ) {
+                        player.playGuiSound()
                         ChallengeInventory.open(player, plugin)
+                    })
+
+                    contents.set(2, 8, IntelligentItem.of(
+                        ItemBuilder(sender.toMaterial("item_plugin_material"))
+                            .displayName(sender.getTranslated("item_plugin_displayname"))
+                            .lore(sender.toArray("item_plugin_lore"))
+                            .build()
+                    ) {
+                        player.playGuiSound()
+                        PluginInventory.open(player, plugin)
                     })
                 }
             })
