@@ -1,19 +1,15 @@
 package io.github.rysefoxx.challenge.core.command
 
-import com.google.common.collect.ImmutableList
 import io.github.rysefoxx.challenge.core.ChallengePlugin
 import io.github.rysefoxx.challenge.core.default.PermissionDefaults
-import io.github.rysefoxx.challenge.core.extension.*
 import io.github.rysefoxx.challenge.core.inventory.ChallengeInventory
 import io.github.rysefoxx.challenge.core.inventory.PluginInventory
 import io.github.rysefoxx.challenge.core.module.ModuleManager
-import io.github.rysefoxx.challenge.core.util.ItemBuilder
+import io.github.rysefoxx.challenge.extension.*
 import io.github.rysefoxx.inventory.plugin.content.IntelligentItem
 import io.github.rysefoxx.inventory.plugin.content.InventoryContents
 import io.github.rysefoxx.inventory.plugin.content.InventoryProvider
 import io.github.rysefoxx.inventory.plugin.pagination.RyseInventory
-import net.kyori.adventure.text.Component
-import net.kyori.adventure.text.minimessage.tag.resolver.Formatter
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
@@ -26,12 +22,12 @@ class SettingsCommand(private val plugin: ChallengePlugin) : CommandExecutor {
             return true
 
         if (!sender.hasPermission(PermissionDefaults.SETTINGS_COMMAND)) {
-            sender.translated("no_permission")
+            sender.translated("no_permission", ChallengePlugin.adventure)
             return true
         }
 
         if (ModuleManager.challengeModules.isEmpty()) {
-            sender.translated("no_modules")
+            sender.translated("no_modules", ChallengePlugin.adventure)
             return true
         }
 
@@ -43,7 +39,7 @@ class SettingsCommand(private val plugin: ChallengePlugin) : CommandExecutor {
                     contents!!.fillDefault(player!!)
                     contents.removeItemWithConsumer(
                         10, 11, 13, 15, 16, 18, 21, 22, 23, 26, 27, 30, 31, 32, 35, 37, 38, 40, 42, 43
-                    );
+                    )
 
                     contents.set(1, 4, IntelligentItem.of(
                         ItemBuilder(sender.toMaterial("item_challenge_material"))

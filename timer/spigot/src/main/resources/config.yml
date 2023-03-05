@@ -1,0 +1,30 @@
+#Should the GameMode of the players be changed after the timer expires?
+timer_expired_change_gamemode: true
+#The GameMode that all players get when the timer runs out.
+timer_expired_gamemode: "SPECTATOR"
+#Should a broadcast message be issued when the timer hits zero?
+timer_expired_broadcast: true
+#Should a broadcast sound be issued when the timer hits zero?
+timer_expired_broadcast_sound: true
+#Should a broadcast message be issued when the timer is started?
+timer_start_broadcast: false
+#Should a broadcast sound be issued when the timer is started?
+timer_start_broadcast_sound: false
+#Should a broadcast message be issued when the timer is paused?
+timer_pause_broadcast: false
+#Should a broadcast sound be issued when the timer is paused?
+timer_pause_broadcast_sound: false
+#Should a broadcast message be issued when the timer is reset?
+timer_reset_broadcast: false
+#Should a broadcast sound be issued when the timer is reset?
+timer_reset_broadcast_sound: false
+#Should a broadcast message be issued when the player resets the time?
+timer_set_broadcast: false
+#Should a broadcast sound be issued when the player resets the time?
+timer_set_broadcast_sound: false
+#Should the timer be stopped automatically when a challenge is completed?
+timer_stop_after_victory: true
+#Should the challenge be stopped automatically when a challenge is completed?
+challenge_stop_after_victory: true
+#Gamemode that all players get after the victory.
+challenge_gamemode_after_victory: "SPECTATOR"

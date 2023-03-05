@@ -1,32 +1,33 @@
 package io.github.rysefoxx.challenge.core.extension
 
 import io.github.rysefoxx.challenge.core.ChallengePlugin
-import io.github.rysefoxx.challenge.core.config.impl.PluginConfig
-import io.github.rysefoxx.challenge.core.util.ItemBuilder
-import io.github.rysefoxx.challenge.extension.JarDownloader
-import io.github.rysefoxx.challenge.extension.JarModule
+import io.github.rysefoxx.challenge.core.jar.JarDownloader
+import io.github.rysefoxx.challenge.core.jar.JarModule
+import io.github.rysefoxx.challenge.document.impl.TimerExtensionDocument
+import io.github.rysefoxx.challenge.extension.*
 import io.github.rysefoxx.inventory.plugin.content.IntelligentItem
 import io.github.rysefoxx.inventory.plugin.content.InventoryContents
 import net.kyori.adventure.text.minimessage.tag.resolver.Formatter
 import org.bukkit.Bukkit
-import org.bukkit.Sound
 import org.bukkit.entity.Player
-import org.bukkit.event.inventory.ClickType
 import org.bukkit.event.inventory.InventoryClickEvent
 import java.io.File
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.util.UUID
+import java.util.*
 
 class TimerExtension(private val plugin: ChallengePlugin) : JarModule() {
 
+    override val id: String
+        get() = "ChallengeTimer"
+    override var isDownloading: Boolean = false
+
     override var downloaded: Boolean = false
-        get() = PluginConfig.getBoolean("$id.downloaded")
+        get() = TimerExtensionDocument.getBoolean("$id.downloaded") || Bukkit.getPluginManager().isPluginEnabled(id)
         set(value) {
             field = value
-            PluginConfig.set("$id.downloaded", value)
+            TimerExtensionDocument.set("$id.downloaded", value)
         }
-    override var isDownloading: Boolean = false
 
     override var enabled: Boolean
         get() = Bukkit.getPluginManager().isPluginEnabled(id)
@@ -37,21 +38,24 @@ class TimerExtension(private val plugin: ChallengePlugin) : JarModule() {
                 ?.let { Bukkit.getPluginManager().disablePlugin(it) }
         }
 
-    override val id: String
-        get() = "ChallengeTimer"
-
     private var from: UUID? = null
-        get() = UUID.fromString(PluginConfig.getString("$id.from"))
+        get() {
+            val value = TimerExtensionDocument.getString("$id.from")
+            return if (value == null) null else UUID.fromString(value)
+        }
         set(value) {
             field = value
-            PluginConfig.set("$id.from", value.toString())
+            TimerExtensionDocument.set("$id.from", value.toString())
         }
 
     private var date: LocalDateTime? = null
-        get() = LocalDateTime.parse(PluginConfig.getString("$id.date"))
+        get() {
+            val value = TimerExtensionDocument.getString("$id.date")
+            return if (value == null) null else LocalDateTime.parse(value)
+        }
         set(value) {
             field = value
-            PluginConfig.set("$id.date", value.toString())
+            TimerExtensionDocument.set("$id.date", value.toString())
         }
 
     override fun displayItem(player: Player): IntelligentItem {
@@ -59,7 +63,7 @@ class TimerExtension(private val plugin: ChallengePlugin) : JarModule() {
             ItemBuilder(player.toMaterial("challengetimer_item_material"))
                 .displayName(player.getTranslated("challengetimer_item_displayname"))
                 .lore(
-                    player.toArraytest(
+                    player.toArray(
                         "challengetimer_item_lore",
                         listOf(
                             if (from == null) "" else Bukkit.getOfflinePlayer(from!!).name,
@@ -86,28 +90,28 @@ class TimerExtension(private val plugin: ChallengePlugin) : JarModule() {
 
     override fun onClick(event: InventoryClickEvent) {
         val player = event.whoClicked as? Player ?: return
-        val contents = plugin.inventoryManager.getContents(player.uniqueId)
+        val contents = plugin.inventoryManager.getContents(player.uniqueId).orElse(null)
 
         when {
-            event.isLeftClick -> handleLeftClick(player, contents.orElse(null), event)
-            event.isRightClick -> handleRightClick(player, contents.orElse(null), event)
-            event.click == ClickType.MIDDLE -> handleMiddleClick(player, contents.orElse(null), event)
+            !event.isShiftClick && event.isLeftClick -> download(player, contents, event)
+            !event.isShiftClick && event.isRightClick -> toggle(player, contents, event)
+            event.isShiftClick && event.isRightClick -> delete(player, contents, event)
         }
     }
 
-    override fun download(player: Player, enabled: Boolean): Boolean {
-        val file = JarDownloader.download(id)
+    override fun download(enable: Boolean): Boolean {
+        val file = JarDownloader.download(id + "1")
 
-        if(enabled)
-            JarDownloader.loadAndActive(file)
+        if (enable)
+            JarDownloader.enableJar(file)
 
         return true
     }
 
-    private fun handleMiddleClick(player: Player, contents: InventoryContents?, event: InventoryClickEvent) {
+    private fun delete(player: Player, contents: InventoryContents?, event: InventoryClickEvent) {
         player.playGuiSound()
         if (!downloaded) {
-            player.translated("plugin_not_downloaded")
+            player.translated("plugin_not_downloaded", ChallengePlugin.adventure)
             return
         }
 
@@ -128,51 +132,51 @@ class TimerExtension(private val plugin: ChallengePlugin) : JarModule() {
         date = null
         downloaded = false
         contents?.update(event.slot, displayItem(player))
-        player.translated("plugin_deleted", id)
+        player.translated("plugin_deleted", id, ChallengePlugin.adventure)
     }
 
-    private fun handleRightClick(player: Player, contents: InventoryContents?, event: InventoryClickEvent) {
+    private fun toggle(player: Player, contents: InventoryContents?, event: InventoryClickEvent) {
         player.playGuiSound()
         if (!downloaded) {
-            player.translated("plugin_not_downloaded")
+            player.translated("plugin_not_downloaded", ChallengePlugin.adventure)
             return
         }
 
         if (enabled) {
             enabled = false
             Bukkit.getPluginManager().getPlugin(id)?.let { Bukkit.getPluginManager().disablePlugin(it) }
-            player.translated("plugin_disabled")
+            player.translated("plugin_disabled", ChallengePlugin.adventure)
         } else {
             enabled = true
             Bukkit.getPluginManager().getPlugin(id)?.let { Bukkit.getPluginManager().enablePlugin(it) }
-            player.translated("plugin_enabled")
+            player.translated("plugin_enabled", ChallengePlugin.adventure)
         }
 
         contents?.update(event.slot, displayItem(player))
     }
 
-    private fun handleLeftClick(player: Player, contents: InventoryContents?, event: InventoryClickEvent) {
+    private fun download(player: Player, contents: InventoryContents?, event: InventoryClickEvent) {
         player.playGuiSound()
         if (downloaded) {
-            player.translated("plugin_already_downloaded")
+            player.translated("plugin_already_downloaded", ChallengePlugin.adventure)
             return
         }
         if (isDownloading) {
-            player.translated("plugin_in_download")
+            player.translated("plugin_in_download", ChallengePlugin.adventure)
             return
         }
 
         isDownloading = true
 
-        player.translated("plugin_start_download", id)
-        if (download(player, true)) {
+        player.translated("plugin_start_download", id, ChallengePlugin.adventure)
+        if (download(true)) {
             downloaded = true
             from = player.uniqueId
             date = LocalDateTime.now()
             contents?.update(event.slot, displayItem(player))
-            player.translated("plugin_download_success")
+            player.translated("plugin_download_success", ChallengePlugin.adventure)
         } else {
-            player.translated("plugin_download_error")
+            player.translated("plugin_download_error", ChallengePlugin.adventure)
         }
 
         isDownloading = false

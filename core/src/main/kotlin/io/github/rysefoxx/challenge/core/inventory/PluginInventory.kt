@@ -1,9 +1,9 @@
 package io.github.rysefoxx.challenge.core.inventory
 
 import io.github.rysefoxx.challenge.core.ChallengePlugin
-import io.github.rysefoxx.challenge.core.extension.fillDefaultBorders
-import io.github.rysefoxx.challenge.core.extension.getTranslated
 import io.github.rysefoxx.challenge.core.extension.ExtensionManager
+import io.github.rysefoxx.challenge.extension.fillDefaultBorders
+import io.github.rysefoxx.challenge.extension.getTranslated
 import io.github.rysefoxx.inventory.plugin.content.InventoryContents
 import io.github.rysefoxx.inventory.plugin.content.InventoryProvider
 import io.github.rysefoxx.inventory.plugin.pagination.RyseInventory

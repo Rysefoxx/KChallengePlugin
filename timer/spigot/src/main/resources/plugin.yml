@@ -1,0 +1,11 @@
+name: ChallengeTimer
+version: '${project.version}'
+main: io.github.rysefoxx.challenge.timer.spigot.TimerPlugin
+authors: [ Rysefoxx ]
+description: Timer Plugin
+api-version: 1.19
+libraries:
+  - net.kyori:adventure-text-minimessage:4.12.0
+  - net.kyori:adventure-platform-bukkit:4.2.0
+commands:
+  timer:

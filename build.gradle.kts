@@ -19,11 +19,11 @@ allprojects {
     tasks {
         withType(JavaCompile::class.java).configureEach {
             options.encoding = "UTF-8"
-            options.release.set(18)
+            options.release.set(17)
         }
 
         withType(KotlinCompile::class.java).configureEach {
-            kotlinOptions.jvmTarget = "18"
+            kotlinOptions.jvmTarget = "17"
         }
     }
 

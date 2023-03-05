@@ -2,7 +2,7 @@ package io.github.rysefoxx.challenge.core.extension
 
 import com.google.common.collect.ImmutableSet
 import io.github.rysefoxx.challenge.core.ChallengePlugin
-import io.github.rysefoxx.challenge.extension.JarModule
+import io.github.rysefoxx.challenge.core.jar.JarModule
 
 object ExtensionManager {
 

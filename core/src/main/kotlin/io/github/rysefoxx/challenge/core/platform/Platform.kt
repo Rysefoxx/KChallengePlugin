@@ -2,10 +2,11 @@ package io.github.rysefoxx.challenge.core.platform
 
 import io.github.rysefoxx.challenge.core.ChallengePlugin
 import io.github.rysefoxx.challenge.core.module.ModuleManager
-import io.github.rysefoxx.challenge.core.module.Module
 import org.reflections.Reflections
 import java.lang.reflect.Modifier
 import java.util.logging.Level
+import io.github.rysefoxx.challenge.core.module.Module
+import io.github.rysefoxx.challenge.core.module.impl.ChallengeModule
 
 abstract class Platform(val plugin: ChallengePlugin, val modulePath: String) {
 
@@ -28,6 +29,7 @@ abstract class Platform(val plugin: ChallengePlugin, val modulePath: String) {
                 return@forEach
             }
 
+            module.plugin = plugin
             ModuleManager.register(module)
         }
     }
